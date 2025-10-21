@@ -1,0 +1,95 @@
+/* File: public/css/app.css */
+
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    min-height: 100%;
+    padding: 15vh 20px 20px 20px; 
+    box-sizing: border-box;
+}
+
+/* Logo */
+.logo-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    margin-bottom: 24px;
+}
+
+.logo-circle img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Main Heading */
+h1 {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+/* Gradient text (bina animation) */
+.gradient-text {
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Subheading */
+p {
+    font-size: 18px;
+    color: #aaa;
+    margin-bottom: 40px;
+    max-width: 400px;
+}
+
+/* Topic Cards Grid */
+.topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.topic-card {
+    background-color: rgba(42, 42, 42, 0.8);
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 24px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    backdrop-filter: blur(5px);
+}
+
+.topic-card:hover {
+    transform: translateY(-5px);
+    border-color: #4facfe;
+    background-color: rgba(58, 58, 58, 0.9);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 600px) {
+    .welcome-container {
+        padding-top: 10vh; /* Upar ki space thodi kam karein */
+    }
+
+    h1 {
+        font-size: 32px; /* Font size ko aur chhota karein */
+    }
+    
+    p {
+        font-size: 16px;
+    }
+    
+    .topic-grid {
+        grid-template-columns: 1fr; /* Mobile par cards ek ke niche ek */
+    }
+}

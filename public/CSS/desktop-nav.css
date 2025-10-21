@@ -1,0 +1,40 @@
+.desktop-header { display: none; }
+
+@media (min-width: 768px) {
+    .desktop-header {
+        width: 100%;
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+    }
+
+    .desktop-header .logo {
+        font-weight: bold;
+        font-size: 24px;
+        color: white;
+    }
+    
+    /* === Profile Dropdown Styling === */
+    .profile-menu { position: relative; }
+    .profile-btn {
+        display: flex; align-items: center; gap: 10px;
+        background-color: #333; border: 1px solid #555; border-radius: 20px;
+        padding: 5px 15px 5px 5px; color: white; cursor: pointer; font-size: 16px;
+    }
+    .profile-btn img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+    .dropdown-content {
+        display: none; position: absolute; top: 120%; right: 0;
+        background-color: #2a2a2a; min-width: 180px; border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.5); z-index: 101; overflow: hidden;
+    }
+    .dropdown-content.show { display: block; }
+    .dropdown-link { display: block; padding: 12px 16px; text-decoration: none; color: #ccc; }
+    .dropdown-link:hover { background-color: #3a3a3a; color: white; }
+    .dropdown-divider { height: 1px; background-color: #444; margin: 5px 0; }
+}

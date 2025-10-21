@@ -1,0 +1,17 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 2vh 0;
+    background-color: #1e1e1e;
+    font-family: Arial, sans-serif;
+    color: white;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    /* overflow: hidden; yahan se hata diya gaya hai */
+}

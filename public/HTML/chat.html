@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Q-Assistant</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/chat.css">
+    <link rel="stylesheet" href="../css/chat-input.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+</head>
+<body>
+    <input type="file" id="file-input" style="display: none;">
+
+    <button class="hamburger-btn" id="hamburger-btn">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+    </button>
+
+    <div class="main-content" id="main-content">
+        <div class="chat-container">
+            <header class="chat-header">
+                <a href="/" class="header-link">
+                    <h3 class="sliding-glow">Q-Assistant</h3>
+                </a>
+            </header>
+            <div class="messages" id="message-container">
+                <div class="empty-chat-screen" id="welcome-screen">
+                    <div class="logo-circle">
+                        <img src="../images/Q-AI.jpg" alt="Q-Assistant Logo">
+                    </div>
+                    <h2>Welcome to Q-Assistant!</h2>
+                    <p>Start a conversation by typing below or pick a suggestion.</p>
+                    <div class="suggestion-chips">
+                        <button class="chip">Tell me about your day</button>
+                        <button class="chip">Practice for a job interview</button>
+                        <button class="chip">Discuss a hobby</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-bar">
+                <button class="circle-btn" id="addBtn" title="Add">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#e6e6e6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="pill" id="pill">
+                    <div class="placeholder" id="placeholder">Hey, I'm Q-AI - what's on your mind?</div>
+                    <button class="mic-btn" id="mic-btn">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v10" stroke="#bfbfbf" stroke-width="1.6" stroke-linecap="round"/><rect x="9" y="2" width="6" height="12" rx="3" stroke="#bfbfbf" stroke-width="1.6"/><path d="M19 12v1a7 7 0 0 1-14 0v-1" stroke="#bfbfbf" stroke-width="1.6" stroke-linecap="round"/></svg>
+                    </button>
+                    <button class="send-btn-inner" id="send-btn" style="display: none;"> <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12L21 3L14 21L10 14L3 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav-panel" id="nav-panel">
+        <a href="#" class="nav-link">Home</a>
+        <a href="#" class="nav-link">Profile</a>
+        <a href="#" class="nav-link">Chat History</a>
+        <a href="#" class="nav-link">Settings</a>
+        <a href="#" class="nav-link">Logout</a>
+    </nav>
+
+    <script src="../js/chat.js"></script>
+    <script src="../js/voiceHandler.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/fileHandler.js"></script>
+</body>
+</html>

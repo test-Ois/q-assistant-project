@@ -1,0 +1,122 @@
+/* File: public/css/chat-input.css */
+
+:root {
+    --panel: #2a2a2a;
+    --muted: #bdbdbd;
+    --accent: #ffffff;
+    --shadow: rgba(0,0,0,0.6);
+}
+
+.chat-bar {
+    width: 100%;
+    display: flex; /* VERY IMPORTANT: Makes children horizontal */
+    align-items: center; /* Aligns them vertically in the middle */
+    gap: 10px;
+    padding: 10px;
+    flex-shrink: 0; /* Prevents input bar from shrinking */
+}
+
+/* Round circle button (plus) */
+.circle-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px var(--shadow);
+    flex-shrink: 0; /* Prevents button from shrinking */
+    border: none;
+    cursor: pointer;
+}
+
+/* Main pill input */
+.pill {
+    flex-grow: 1; /* Takes all available horizontal space */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--panel);
+    border-radius: 40px;
+    padding: 8px 8px 8px 16px;
+    box-shadow: 0 6px 18px var(--shadow);
+    min-height: 48px;
+}
+
+.placeholder {
+    flex-grow: 1;
+    font-size: 16px;
+    color: var(--muted);
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Mic icon button */
+.mic-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* Send button inside the pill */
+.send-btn-inner {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.send-btn-inner svg {
+    width: 18px;
+    height: 18px;
+}
+
+.listening {
+    background: #444;
+}
+
+.chat-bar svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+}
+/* Responsive input bar */
+@media (max-width: 768px) {
+    .pill {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pill {
+        border-radius: 20px;
+        padding: 8px 12px;
+    }
+
+    .placeholder {
+        font-size: 13px;
+    }
+
+    .chat-bar {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+}
+    
