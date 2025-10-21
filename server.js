@@ -10,13 +10,21 @@ const mongoose = require('mongoose');
 const openRouterApiKey = process.env.OPENROUTER_API_KEY;
 
 const app = express();
-const PORT = 3000;
+// Render automatically sets the PORT environment variable
+const PORT = process.env.PORT || 3000; 
 
 // === MONGODB CONNECTION ===
-const MONGO_URI = 'mongodb://localhost:27017/q-assistant';
+const MONGO_URI = process.env.MONGO_URI; // Get connection string from .env
+if (!MONGO_URI) {
+    console.error('MongoDB URI not found. Make sure MONGO_URI is set in the .env file or Render Environment Variables.');
+    process.exit(1); // Stop if URI is missing
+}
 mongoose.connect(MONGO_URI)
     .then(() => console.log('MongoDB successfully connected!'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    .catch(err => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1); // Stop on connection error
+    });
 // ==========================
 
 // === MESSAGE SCHEMA and MODEL ===
@@ -29,24 +37,26 @@ const Message = mongoose.model('Message', messageSchema);
 // ==============================
 
 app.use(express.json()); // Middleware to parse JSON bodies
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
 
-// === Routes for HTML Pages ===
+// === Serve Static Files (Using process.cwd()) ===
+app.use(express.static(path.join(process.cwd(), 'public'))); 
+// ===============================================
+
+// === Routes for HTML Pages (Using process.cwd()) ===
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html', 'index.html'));
+    res.sendFile(path.join(process.cwd(), 'public', 'html', 'index.html'));
 });
 app.get('/chat', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html', 'chat.html'));
+    res.sendFile(path.join(process.cwd(), 'public', 'html', 'chat.html'));
 });
-// =============================
+// ==================================================
 
 // === API ENDPOINT WITH OPENROUTER INTEGRATION ===
 app.post('/api/chat', async (req, res) => {
     const userMessageText = req.body.message;
 
-    // Check if API key is loaded
     if (!openRouterApiKey) {
-        console.error('OpenRouter API Key not found. Make sure it is set in the .env file.');
+        console.error('OpenRouter API Key not found.');
         return res.status(500).json({ reply: 'API key configuration error.' });
     }
 
@@ -63,9 +73,12 @@ app.post('/api/chat', async (req, res) => {
             headers: {
                 "Authorization": `Bearer ${openRouterApiKey}`,
                 "Content-Type": "application/json"
+                // Optional Headers for OpenRouter identification
+                // "HTTP-Referer": req.headers.host || 'http://localhost:3000', 
+                // "X-Title": "Q-Assistant" 
             },
             body: JSON.stringify({
-                "model": "openai/gpt-3.5-turbo",// Or any model you prefer
+                "model": "openai/gpt-3.5-turbo", // Make sure this model is available/correct
                 "messages": [
                     { "role": "user", "content": userMessageText }
                 ]
@@ -74,14 +87,12 @@ app.post('/api/chat', async (req, res) => {
 
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('OpenRouter API Error:', errorData);
+            console.error('OpenRouter API Error:', response.status, errorData);
             throw new Error(`API error: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
-
-        // Extract the response text
-        let aiResponseText = "Sorry, I couldn't get a response."; // Default reply
+        let aiResponseText = "Sorry, I couldn't get a response.";
         if (data.choices && data.choices.length > 0 && data.choices[0].message && data.choices[0].message.content) {
             aiResponseText = data.choices[0].message.content;
         } else {
@@ -105,5 +116,5 @@ app.post('/api/chat', async (req, res) => {
 // ===============================================
 
 app.listen(PORT, () => {
-    console.log(`Q-Assistant server is running on http://localhost:${PORT}`);
+    console.log(`Q-Assistant server is running on port ${PORT}`); // Use the dynamic PORT
 });
