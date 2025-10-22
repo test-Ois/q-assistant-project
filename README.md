@@ -1,7 +1,8 @@
 # Q-Assistant 🤖
 
-An AI-powered chatbot designed to help users practice English conversation, similar to conversational AI apps. This project is currently under active development with plans to add more features. Built using Node.js, Express, MongoDB, and the OpenRouter API.
+An AI-powered chatbot designed to help users practice English conversation, similar to conversational AI apps. This project is currently under active development with plans to add more features. Built using Node.js, Express, MongoDB, and the OpenRouter API, with future plans to integrate Google Vertex AI.
 
+---
 ## ✨ Features
 
 ### Current Features:
@@ -16,17 +17,17 @@ An AI-powered chatbot designed to help users practice English conversation, simi
 * **Profile Management:** User profiles and settings.
 * **Enhanced Chat History:** Viewing and managing past conversations.
 * **Voice Call Feature:** Real-time voice interaction (User-to-AI or User-to-User).
-* **AI Model Selection:** Allow users to choose different AI models via OpenRouter.
+* **AI Model Selection:** Allow users to choose different AI models via OpenRouter **and Google Vertex AI**.
 * **Voice Selection:** Option to choose between male and female AI voices (TTS).
 * **AI Tools:** Features like AI-assisted email writing and image generation.
 
 ---
 ## 🚀 Tech Stack
 
-* **Frontend:** HTML, CSS5, JavaScript
+* **Frontend:** HTML5, CSS3, JavaScript (ES6+)
 * **Backend:** Node.js, Express.js
 * **Database:** MongoDB (with Mongoose) hosted on MongoDB Atlas
-* **AI:** OpenRouter API and Vertex API
+* **AI:** OpenRouter API, **Google Vertex AI (Planned)**
 * **Real-time Communication (Voice Input):** Web Speech API
 * **Deployment:** Render
 
@@ -48,6 +49,7 @@ An AI-powered chatbot designed to help users practice English conversation, simi
     MONGO_URI=your_local_or_atlas_mongodb_uri 
     # Example Local: mongodb://localhost:27017/q-assistant
     # Example Atlas: mongodb+srv://user:pass@cluster.mongodb.net/q-assistant?retryWrites=true&w=majority
+    # GOOGLE_APPLICATION_CREDENTIALS=path/to/your/vertex_ai_key.json (For future Vertex AI use)
     ```
 4.  **Start the server:**
     ```bash
@@ -64,7 +66,7 @@ You can try the live version (work in progress) here:
 ---
 ## 🚧 Project Status
 
-This project is under active development. More features are being added.
+This project is under active development. More features and AI integrations are planned.
 
 ---
 
