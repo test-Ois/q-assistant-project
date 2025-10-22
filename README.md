@@ -23,7 +23,7 @@ An AI-powered chatbot designed to help users practice English conversation, simi
 ---
 ## 🚀 Tech Stack
 
-* **Frontend:** HTML, CSS, Vanilla JavaScript
+* **Frontend:** HTML, CSS5, JavaScript
 * **Backend:** Node.js, Express.js
 * **Database:** MongoDB (with Mongoose) hosted on MongoDB Atlas
 * **AI:** OpenRouter API and Vertex API
