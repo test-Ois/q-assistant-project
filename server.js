@@ -1,44 +1,101 @@
-// server.js (Updated Paths)
+// ====================== Q-ASSISTANT SERVER ======================
 
-require('dotenv').config(); 
-const fetch = require('node-fetch');
-const express = require('express');
-const path = require('path');
-const mongoose = require('mongoose');
+require("dotenv").config();
+const express = require("express");
+const path = require("path");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const fetch = require("node-fetch");
 
-const openRouterApiKey = process.env.OPENROUTER_API_KEY;
-const PORT = process.env.PORT || 3000; 
-const MONGO_URI = process.env.MONGO_URI; 
+const app = express();
 
-// --- MongoDB Connection ---
-if (!MONGO_URI) { /* ... error handling ... */ }
-mongoose.connect(MONGO_URI) /* ... .then() .catch() ... */
+// Middleware
+app.use(express.json());
+app.use(cors());
 
-// --- Schema and Model ---
-const messageSchema = new mongoose.Schema({ /* ... */ });
-const Message = mongoose.model('Message', messageSchema);
+// ====================== DATABASE CONNECTION ======================
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Atlas Connected Successfully"))
+  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
-app.use(express.json()); 
-
-// === Serve Static Files (Using __dirname) ===
-// Yeh line Render ko batayegi ki CSS/JS/Images kahan hain
-app.use(express.static(path.join(__dirname, 'public'))); 
-// ===============================================
-
-// === Routes for HTML Pages (Using __dirname) ===
-app.get('/', (req, res) => {
-    // __dirname project ke root ko point karna chahiye Render par
-    res.sendFile(path.join(__dirname, 'public', 'html', 'index.html')); 
+// ====================== MESSAGE MODEL ======================
+const messageSchema = new mongoose.Schema({
+  text: String,
+  sender: String, // 'user' or 'ai'
+  timestamp: { type: Date, default: Date.now },
 });
-app.get('/chat', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html', 'chat.html'));
-});
-// ==================================================
+const Message = mongoose.model("Message", messageSchema);
 
-// --- API Endpoint ---
-app.post('/api/chat', async (req, res) => { /* ... API code ... */ });
+// ====================== ROUTES ======================
 
-// --- Start Server ---
-app.listen(PORT, () => {
-    console.log(`Q-Assistant server is running on port ${PORT}`);
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, "public")));
+
+// Main pages
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "html", "index.html"));
 });
+
+app.get("/chat", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "html", "chat.html"));
+});
+
+// ====================== CHAT API ======================
+app.post("/api/chat", async (req, res) => {
+  const openRouterApiKey = process.env.OPENROUTER_API_KEY;
+  const userMessageText = req.body.message;
+
+  if (!openRouterApiKey) {
+    console.error("❌ OpenRouter API Key missing. Check your .env file.");
+    return res.status(500).json({ reply: "API key not configured properly." });
+  }
+
+  try {
+    // 1️⃣ Save User Message
+    const userMessage = new Message({ text: userMessageText, sender: "user" });
+    await userMessage.save();
+
+    // 2️⃣ Call OpenRouter API
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${openRouterApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-3.5-turbo",
+        messages: [{ role: "user", content: userMessageText }],
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("OpenRouter API Error:", errorData);
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    let aiResponseText =
+      data?.choices?.[0]?.message?.content || "Sorry, I couldn't get a response.";
+
+    // 3️⃣ Save AI Response
+    const aiMessage = new Message({ text: aiResponseText, sender: "ai" });
+    await aiMessage.save();
+
+    // 4️⃣ Send back to frontend
+    res.json({ reply: aiResponseText });
+  } catch (error) {
+    console.error("❌ Error in /api/chat:", error);
+    res.status(500).json({ reply: `Error: ${error.message}` });
+  }
+});
+
+// ====================== CATCH-ALL (for React-style routing or direct access) ======================
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "html", "index.html"));
+});
+
+// ====================== SERVER START ======================
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => console.log(`🚀 Q-Assistant running on port ${PORT}`));
