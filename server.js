@@ -1,6 +1,4 @@
 // ====================== Q-ASSISTANT SERVER ======================
-const cors = require('cors');
-app.use(cors());
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
