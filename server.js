@@ -75,7 +75,7 @@ app.post("/api/chat", async (req, res) => {
     }
 
     const data = await response.json();
-    let aiResponseText =
+    const aiResponseText =
       data?.choices?.[0]?.message?.content || "Sorry, I couldn't get a response.";
 
     // 3️⃣ Save AI Response
@@ -90,8 +90,8 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
-// ====================== CATCH-ALL (for React-style routing or direct access) ======================
-app.get("/*", (req, res) => {
+// ====================== CATCH-ALL (for static routing) ======================
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "html", "index.html"));
 });
 
