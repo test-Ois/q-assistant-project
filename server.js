@@ -1,5 +1,6 @@
 // ====================== Q-ASSISTANT SERVER ======================
-
+const cors = require('cors');
+app.use(cors());
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
@@ -92,7 +93,7 @@ app.post("/api/chat", async (req, res) => {
 });
 
 // ====================== CATCH-ALL (for React-style routing or direct access) ======================
-app.get("*", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "html", "index.html"));
 });
 
