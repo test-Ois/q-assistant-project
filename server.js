@@ -13,10 +13,18 @@ app.use(express.json());
 app.use(cors());
 
 // ====================== DATABASE CONNECTION ======================
+const MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+    console.error("❌ MongoDB URI not found. Check .env or Render Environment Variables.");
+    process.exit(1);
+}
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB Atlas Connected Successfully"))
-  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
+  .catch((err) => {
+      console.error("❌ MongoDB Connection Error:", err);
+      process.exit(1);
+  });
 
 // ====================== MESSAGE MODEL ======================
 const messageSchema = new mongoose.Schema({
@@ -46,8 +54,8 @@ app.post("/api/chat", async (req, res) => {
   const userMessageText = req.body.message;
 
   if (!openRouterApiKey) {
-    console.error("❌ OpenRouter API Key missing. Check your .env file.");
-    return res.status(500).json({ reply: "API key not configured properly." });
+    console.error("❌ OpenRouter API Key missing.");
+    return res.status(500).json({ reply: "API key not configured." });
   }
 
   try {
@@ -90,10 +98,10 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
-// ====================== CATCH-ALL (for static routing) ======================
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "html", "index.html"));
-});
+// ====================== CATCH-ALL REMOVED ======================
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "public", "html", "index.html"));
+// });
 
 // ====================== SERVER START ======================
 const PORT = process.env.PORT || 10000;
